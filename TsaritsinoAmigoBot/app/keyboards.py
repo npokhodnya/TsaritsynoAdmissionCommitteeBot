@@ -17,6 +17,8 @@ back1 = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='В г�
 
 back2 = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Назад', callback_data='back2')]
                                                  ])
+back3 = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Назад', callback_data='back3')]
+                                                 ])
 
 settings2 = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Прием лиц с ограниченными возможностями', callback_data='bonus')],
                                                  [InlineKeyboardButton(text='Проходные баллы', callback_data='Passing_points')],
