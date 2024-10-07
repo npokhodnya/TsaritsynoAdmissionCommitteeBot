@@ -14,7 +14,6 @@ TOKEN = os.getenv('TOKEN')
 
 bot = Bot(token=TOKEN)
 
-WEBHOOK_PATH = f"/bot/{TOKEN}"
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
 
@@ -48,13 +47,13 @@ def main() -> None:
         secret_token=TOKEN,
     )
     # Register webhook handler on application
-    webhook_requests_handler.register(app, path=WEBHOOK_PATH)
+    webhook_requests_handler.register(app, path=f"/bot/{TOKEN}")
 
     # Mount dispatcher startup and shutdown hooks to aiohttp application
     setup_application(app, dp, bot=bot)
 
     # And finally start webserver
-    web.run_app(app, host='127.0.0.1', port=8080)
+    web.run_app(app, host='0.0.0.0', port=8080)
 
 
 if __name__ == "__main__":
