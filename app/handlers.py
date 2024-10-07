@@ -6,7 +6,6 @@ import app.keyboards as kb
 
 router = Router()
 
-grp = ''
 start_text2 = 'Сейчас идут тех работы, функция недоступна :('
 start_text = (', здаствуйте. Этот бот поможет вам с поступлением в один из лучших колледжей Москвы. Ниже вы можете '
               'выбрать интересующие вас детали.')
@@ -142,13 +141,13 @@ async def more(callback: CallbackQuery):
 
 @router.callback_query(F.data == 'bonus')
 async def more(callback: CallbackQuery):
-    await callback.message.edit_text(text=f'{start_text2}',
+    await callback.message.edit_text(text=start_text2,
                                      reply_markup=kb.back1)
 
 
 @router.callback_query(F.data == 'Passing_points')
 async def more(callback: CallbackQuery):
-    await callback.message.edit_text(text=f'{start_text2}',
+    await callback.message.edit_text(text=start_text2,
                                      reply_markup=kb.back1)
 
 
