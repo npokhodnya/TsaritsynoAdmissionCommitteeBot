@@ -142,32 +142,48 @@ async def more(callback: CallbackQuery):
 
 @router.callback_query(F.data == 'bonus')
 async def more(callback: CallbackQuery):
-    await callback.message.edit_text(text=start_text2,
+    await callback.message.edit_text(text='Колледж предоставляет квоты абитуриентам с ограниченными возможностями на '
+                                          'бесплатное очное обучение. Для того, чтобы поступить по данной квоте, вы '
+                                          'должны предоставить в приемную комиссию соответствующий документ (заключение '
+                                          'учреждения медико-социальной экспертизы и (или) справку об установлении инвалидности) '
+                                          'с заключением от врача об отсутствии противопоказаний для обучения в ГБПОУ '
+                                          'Колледж «Царицыно» по выбранной специальности.\nЕсли численность абитуриентов '
+                                          'превышает количество квот, то прем в колледж осуществляется по баллам аттестата.',
                                      reply_markup=kb.back1)
 
 
 @router.callback_query(F.data == 'Passing_points')
 async def more(callback: CallbackQuery):
+    await callback.message.edit_text(text='На данный момент данные о проходных баллах не доступны. Информация о проходных '
+                                          'баллах будет обновляться.\nВключить отслеживание проходого балла?',
+                                     reply_markup=kb.Passing_points_Keyboard)
+
+@router.callback_query(F.data == 'on')
+async def more(callback: CallbackQuery):
     await callback.message.edit_text(text=start_text2,
                                      reply_markup=kb.back1)
 
+@router.callback_query(F.data == 'off')
+async def more(callback: CallbackQuery):
+    await callback.message.edit_text(text=start_text2,
+                                     reply_markup=kb.back1)
 
 @router.callback_query(F.data == 'Opening_hours')
 async def more(callback: CallbackQuery):
     await callback.message.edit_text(text='Часы работы приемной комиссии адрес: метро Орехово ул. Шипиловский пр-д дом 37, корп.1\n'
                                           'Часы работы: понедельник-пятница с 09.00 до 20.00, суббота с 10.00 до 18.00\n'
                                           'Общие телефоны приемной комиссии:\n'
-                                          '84953900190\n'
-                                          'Секретарь приемной комиссии: Железнова Светлана Николаевна тел. 8-916-511-11-03\n'
-                                          'В приемной комиссии Вам помогут подать заявление через портал mos.ru на бюджет. Окажут помощь в выборе'
-                                          ' специальности. Одновременно подадите заявление на платное обучение.',
+                                          '8(495)390-01-90\n'
+                                          'Секретарь приемной комиссии: Железнова Светлана Николаевна тел. 8(916)511-11-03\n'
+                                          'В приемной комиссии Вам помогут подать заявление через портал mos.ru на бюджет. Окажут помощь в выборе '
+                                          'специальности. Одновременно подадите заявление на платное обучение.',
                                      reply_markup=kb.back1)
 
 
 @router.callback_query(F.data == 'Doors')
 async def more(callback: CallbackQuery):
-    await callback.message.edit_text(text=f'{start_text2}',
-                                     reply_markup=kb.back1)
+    await callback.message.edit_text(text='На данный момент для того чтобы узнать информацию о ближайших днях открытых дверей требуется перейти на сайт Колледжа Царицыно.',
+                                     reply_markup=kb.Doors_Keyboard)
 
 
 @router.callback_query(F.data == 'Seven_nation_army')
