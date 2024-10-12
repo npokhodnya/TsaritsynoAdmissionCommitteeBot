@@ -23,13 +23,13 @@ back3 = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Наз
 settings2 = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Прием лиц с ограниченными возможностями', callback_data='bonus')],
                                                  [InlineKeyboardButton(text='Проходные баллы', callback_data='Passing_points')],
                                                  [InlineKeyboardButton(text='Время работы приёмной комиссии',callback_data='Opening_hours')],
-                                                 [InlineKeyboardButton(text='Страница 3 ->', callback_data='sttngs3')],
-                                                 [InlineKeyboardButton(text='<- Страница 1', callback_data='sttngs1')]
+                                                 [InlineKeyboardButton(text='<- Страница 1', callback_data='sttngs1')],
+                                                 [InlineKeyboardButton(text='Страница 3 ->', callback_data='sttngs3')]
                                                  ])
 
 settings3 = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Дни открытых дверей', callback_data='Doors')],
                                                  [InlineKeyboardButton(text='Отсрочка от армии', callback_data='Seven_nation_army')],
-                                                 [InlineKeyboardButton(text='Часто задаваемые вопрос', callback_data='Questions')],
+                                                 [InlineKeyboardButton(text='Часто задаваемые вопросы', callback_data='Questions')],
                                                  [InlineKeyboardButton(text='<- Страница 2', callback_data='sttngs2')]
                                                  ])
 
@@ -40,4 +40,13 @@ SpecialtyKeyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(
                                                  [InlineKeyboardButton(text='Инфокоммуникационные сети', callback_data='information_and_communication')],
                                                  [InlineKeyboardButton(text='Сетевое администрирование', callback_data='sysadm')],
                                                  [InlineKeyboardButton(text='В главное меню',callback_data='back1')]
+                                                 ])
+
+Passing_points_Keyboard =  InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Включить', callback_data='on')],
+                                                 [InlineKeyboardButton(text='Выключить', callback_data='off')],
+                                                 [InlineKeyboardButton(text='В главное меню', callback_data='back1')]
+                                                 ])
+
+Doors_Keyboard =  InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Перейти на сайт', url = 'https://collegetsaritsyno.mskobr.ru/postuplenie-v-kolledzh/dni-otkrytyh-dverej')],
+                                                 [InlineKeyboardButton(text='В главное меню', callback_data='back1')]
                                                  ])
