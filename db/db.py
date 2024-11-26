@@ -68,9 +68,23 @@ async def drop_all_closed():
         await db.execute("delete * FROM Users WHERE bot_open == 0")
 
 
+async def count_of_users():
+    async with sq.connect("bot.db") as db:
+        cursor = await db.execute("Select count(telegram_id) FROM Users")
+        count = await cursor.fetchone()
+        return count[0]
+
+
+async def count_of_closed_users():
+    async with sq.connect("bot.db") as db:
+        cursor = await db.execute("Select count(telegram_id) FROM Users WHERE bot_open == 0")
+        count = await cursor.fetchone()
+        return count[0]
+
+
 async def drop_user_by_id(telegram_id: int):
     async with sq.connect("bot.db") as db:
-        await db.execute("delete * FROM Users WHERE telegram_id == ?", (telegram_id,))
+        await db.execute("delete * FROM Users WHERE telegram_id = ?", (telegram_id,))
 
 
 async def update_bot_open_status(telegram_id: int, bot_open: bool):
@@ -103,25 +117,6 @@ async def change_bot_open_status(telegram_id: int, status: bool = True):
 
 async def is_admin(telegram_id: int):
     async with sq.connect("bot.db") as db:
-        cursor = await db.execute("SELECT role FROM Users where telegram_id == {}".format(telegram_id))
+        cursor = await db.execute("SELECT role FROM Users where telegram_id = {}".format(telegram_id))
         role = await cursor.fetchone()
         return role[0] in ["admin", "superadmin", 'developer']
-
-async def is_super_admin(telegram_id: int):
-    async with sq.connect("bot.db") as db:
-        cursor = await db.execute("SELECT role FROM Users where telegram_id == {}".format(telegram_id))
-        role = await cursor.fetchone()
-        return role[0] in ["superadmin", 'developer']
-
-async def count_of_users() -> int:
-    async with sq.connect("bot.db") as db:
-        cursor = await db.execute("SELECT COUNT(telegram_id) FROM Users")
-        count = await cursor.fetchone()
-        return count
-
-
-async def is_developer(id):
-    async with sq.connect("bot.db") as db:
-        cursor = await db.execute("SELECT role FROM Users where telegram_id == {}".format(id))
-        role = await cursor.fetchone()
-        return role[0] == "developer"
