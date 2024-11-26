@@ -120,3 +120,24 @@ async def is_admin(telegram_id: int):
         cursor = await db.execute("SELECT role FROM Users where telegram_id = {}".format(telegram_id))
         role = await cursor.fetchone()
         return role[0] in ["admin", "superadmin", 'developer']
+
+
+async def is_admin(telegram_id: int):
+    async with sq.connect("bot.db") as db:
+        cursor = await db.execute("SELECT role FROM Users where telegram_id = {}".format(telegram_id))
+        role = await cursor.fetchone()
+        return role[0] in ["admin", "superadmin", 'developer']
+
+
+async def is_super_admin(telegram_id: int):
+    async with sq.connect("bot.db") as db:
+        cursor = await db.execute("SELECT role FROM Users where telegram_id == {}".format(telegram_id))
+        role = await cursor.fetchone()
+        return role[0] in ["superadmin", 'developer']
+
+
+async def is_developer(id):
+    async with sq.connect("bot.db") as db:
+        cursor = await db.execute("SELECT role FROM Users where telegram_id == {}".format(id))
+        role = await cursor.fetchone()
+        return role[0] == "developer"
