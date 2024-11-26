@@ -88,8 +88,10 @@ async def how_to_enroll(callback: CallbackQuery):
 
 @user_router.callback_query(F.data == 'back3')
 async def back_to_specialty(callback: CallbackQuery):
-    await callback.message.edit_text(text=f'{text3}',
-                                     reply_markup=kb.SpecialtyKeyboard)
+    sent_message = await callback.message.answer(text=f'{text3}',
+                                                 reply_markup=kb.SpecialtyKeyboard)
+    from TsaritsinoAmigoBot.run import bot
+    await bot.delete_message(chat_id=callback.message.chat.id, message_id=str(sent_message.message_id - 1))
 
 
 @user_router.callback_query(F.data == 'doсs')
