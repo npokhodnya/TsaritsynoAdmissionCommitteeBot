@@ -23,9 +23,9 @@ class Form(StatesGroup):
 async def page2(callback: CallbackQuery):
     user_id = callback.from_user.id
     if await db.is_admin(user_id):
-        cu = await db.count_of_users()
-        await callback.message.edit_text(text=f'Пользователей бота: {cu}',
-                                         reply_markup=akb.back)
+        await callback.message.edit_text(
+            text=f'Пользователей бота, включая вас: {await db.count_of_users()}, из них {await db.count_of_closed_users()} заблокировали бота',
+            reply_markup=akb.back)
     else:
         logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to check count of users")
 
