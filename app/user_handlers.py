@@ -108,48 +108,80 @@ async def documents(callback: CallbackQuery):
 @user_router.callback_query(F.data == 'cook')
 async def cook_info(callback: CallbackQuery):
     await callback.message.edit_media(
-        media=InputMediaDocument(media='https://collegetsaritsyno.mskobr.ru/attach_files/logo/GERB.png'),
+        media=InputMediaDocument(media='https://collegetsaritsyno.mskobr.ru/attach_files/i-konditerskoe-delo.pdf'),
         reply_markup=kb.back3)
     await callback.message.edit_caption(
-        caption='https://collegetsaritsyno.mskobr.ru/attach_files/logo/GERB.png',
+        caption='Данные о направлении "Поварское и кондитерское дело"',
         reply_markup=kb.back3)
 
 
 @user_router.callback_query(F.data == 'tourism')
 async def tourism_info(callback: CallbackQuery):
-    await callback.message.edit_media(text='здесь нужны файлы',
-                                     reply_markup=kb.back3)
+    await callback.message.edit_media(
+        media=InputMediaDocument(media='https://collegetsaritsyno.mskobr.ru/attach_files/delo.pdf'),
+        reply_markup=kb.back3)
+    await callback.message.edit_caption(
+        caption='Данные о направлении "Туризм и гостеприимство"',
+        reply_markup=kb.back3)
 
 
 @user_router.callback_query(F.data == 'transport')
 async def transport_info(callback: CallbackQuery):
-    await callback.message.edit_text(text='здесь нужны файлы',
-                                     reply_markup=kb.back3)
+    await callback.message.edit_media(
+        media=InputMediaDocument(
+            media='https://collegetsaritsyno.mskobr.ru/attach_files/22-servis-na-transporte-po-vidam-transporta.pdf'),
+        reply_markup=kb.back3)
+    await callback.message.edit_caption(
+        caption='Данные о направлении "Сервис на транспорте"',
+        reply_markup=kb.back3)
 
 
 @user_router.callback_query(F.data == 'inf')
 async def inf_info(callback: CallbackQuery):
     await callback.message.edit_media(
-        media=InputMediaDocument(media='https://tk21.mskobr.ru/files/2022-2023/informaczionnye-sistemy-i-programmirovanie-1.pdf'),
+        media=InputMediaDocument(
+            media='https://tk21.mskobr.ru/files/2022-2023/informaczionnye-sistemy-i-programmirovanie-1.pdf'),
         reply_markup=kb.back3)
     await callback.message.edit_caption(
         caption='По специальности 09.02.07 Информационные системы и программирование прием осуществляется по '
-             'направлениям:\n-программист (бюджет и платное обучение) (адрес обучения: ул. Шипиловский пр-д, дом 37, '
-             'корп.1; ул. Генерала Белова дом 6)\n-разработчик ВЭБ и мультимедийных приложений (бюджет и платное '
-             'обучение) (адрес обучения: ул. Генерала Белова дом 6)\n-специалист по информационным системам ('
+             'направлениям:\n   -программист (бюджет и платное обучение) (адрес обучения: ул. Шипиловский пр-д, дом 37, '
+             'корп.1; ул. Генерала Белова дом 6)\n   -разработчик ВЭБ и мультимедийных приложений (бюджет и платное '
+             'обучение) (адрес обучения: ул. Генерала Белова дом 6)\n   -специалист по информационным системам ('
              'бюджетное обучение) (адрес обучения: ул. Генерала Белова дом 4)',
         reply_markup=kb.back3)
 
+
 @user_router.callback_query(F.data == 'information_and_communication')
 async def information_and_communication_info(callback: CallbackQuery):
-    await callback.message.edit_text(text='здесь нужны файлы',
-                                     reply_markup=kb.back3)
+    await callback.message.edit_media(
+        media=InputMediaDocument(
+            media='https://collegetsaritsyno.mskobr.ru/attach_files/13-infokommunikatsionnyie-seti-i-sistemyi-svyazi.pdf'),
+        reply_markup=kb.back3)
+    await callback.message.edit_caption(
+        caption='Данные о направлении "Инфокоммуникационные сети"',
+        reply_markup=kb.back3)
 
 
 @user_router.callback_query(F.data == 'sysadm')
 async def sysadm_info(callback: CallbackQuery):
-    await callback.message.edit_text(text='здесь нужны файлы',
-                                     reply_markup=kb.back3)
+    await callback.message.edit_media(
+        media=InputMediaDocument(
+            media='https://collegetsaritsyno.mskobr.ru/attach_files/i-sistemnoe-administrirovanie.pdf'),
+        reply_markup=kb.back3)
+    await callback.message.edit_caption(
+        caption='Данные о направлении "Сетевое администрирование"',
+        reply_markup=kb.back3)
+
+
+@user_router.callback_query(F.data == 'comp_comp')
+async def sysadm_info(callback: CallbackQuery):
+    await callback.message.edit_media(
+        media=InputMediaDocument(
+            media='https://collegetsaritsyno.mskobr.ru/attach_files/sistemyi-i-kompleksyi.pdf'),
+        reply_markup=kb.back3)
+    await callback.message.edit_caption(
+        caption='Данные о направлении "Компьютерные системы и комплексы"',
+        reply_markup=kb.back3)
 
 
 @user_router.callback_query(F.data == 'Stages_of_enrollment')
