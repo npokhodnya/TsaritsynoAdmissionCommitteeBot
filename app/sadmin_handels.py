@@ -22,11 +22,27 @@ async def add_admin(message: Message):
                 if old_role in ["sadmin", 'developer']:
                     await message.reply("ОШИБКА! Невозможно сменить роль для суперадмина!")
                     return
-                await db.set_role(id, new_role)
-                await message.reply("Роль изменена!\n"
-                                    f"ID: {id}\n"
-                                    f"Новая роль: {new_role}\n"
-                                    f"Старая роль: {old_role}\n")
+                if new_role == 'admin':
+                    await db.set_role(id, 1)
+                    await message.reply("Роль изменена!\n"
+                                        f"ID: {id}\n"
+                                        f"Новая роль: {new_role}\n"
+                                        f"Старая роль: {old_role}\n")
+                    return
+                if new_role == 'sadmin' or new_role == 'super-admin' or new_role == 'superadmin':
+                    await db.set_role(id, 2)
+                    await message.reply("Роль изменена!\n"
+                                        f"ID: {id}\n"
+                                        f"Новая роль: {new_role}\n"
+                                        f"Старая роль: {old_role}\n")
+                    return
+                if new_role == 'user':
+                    await db.set_role(id, 0)
+                    await message.reply("Роль изменена!\n"
+                                        f"ID: {id}\n"
+                                        f"Новая роль: {new_role}\n"
+                                        f"Старая роль: {old_role}\n")
+                    return
                 logging.critical(
                     f"USER {message.from_user.id} WITH ROLE: {await db.get_role_by_id(message.from_user.id)} CHANGE ROLE FOR USER {id} FROM {old_role} TO {new_role}")
             except Exception as e:
