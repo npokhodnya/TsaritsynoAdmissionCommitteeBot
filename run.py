@@ -1,13 +1,11 @@
 import asyncio
 import logging
 from aiogram import Bot, Dispatcher
-
-from config import TOKEN
+import os
 import db.db
-bot = Bot(token=TOKEN)
-dp = Dispatcher()
 
-kb_list = [{'label': 'Руд болото', 'url': 'https://t.me/+GOhYfBSGvXc1ZGIy'}]
+bot = Bot(token=os.getenv('BOT_TOKEN'))
+dp = Dispatcher()
 
 
 async def main():
@@ -15,8 +13,8 @@ async def main():
     from app.sadmin_handels import sadmin_router
     from app.admin_handlers import admin_router
     dp.include_routers(user_router, sadmin_router, admin_router)
-    await dp.start_polling(bot)
     await db.db.initialize_database()
+    await dp.start_polling(bot)
 
 
 if __name__ == '__main__':

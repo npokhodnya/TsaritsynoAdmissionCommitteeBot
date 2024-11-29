@@ -52,8 +52,6 @@ async def page2(callback: CallbackQuery):
                                          reply_markup=kb.keyboard_page1)
 
 
-
-
 @user_router.callback_query(F.data == 'sttngs2')
 async def page2(callback: CallbackQuery):
     await callback.message.edit_text(text=f'{callback.from_user.first_name}{start_text}',
@@ -90,7 +88,7 @@ async def how_to_enroll(callback: CallbackQuery):
 async def back_to_specialty(callback: CallbackQuery):
     sent_message = await callback.message.answer(text=f'{text3}',
                                                  reply_markup=kb.SpecialtyKeyboard)
-    from TsaritsinoAmigoBot.run import bot
+    from run import bot
     await bot.delete_message(chat_id=callback.message.chat.id, message_id=str(sent_message.message_id - 1))
 
 
@@ -144,10 +142,10 @@ async def inf_info(callback: CallbackQuery):
         reply_markup=kb.back3)
     await callback.message.edit_caption(
         caption='По специальности 09.02.07 Информационные системы и программирование прием осуществляется по '
-             'направлениям:\n   -программист (бюджет и платное обучение) (адрес обучения: ул. Шипиловский пр-д, дом 37, '
-             'корп.1; ул. Генерала Белова дом 6)\n   -разработчик ВЭБ и мультимедийных приложений (бюджет и платное '
-             'обучение) (адрес обучения: ул. Генерала Белова дом 6)\n   -специалист по информационным системам ('
-             'бюджетное обучение) (адрес обучения: ул. Генерала Белова дом 4)',
+                'направлениям:\n   -программист (бюджет и платное обучение) (адрес обучения: ул. Шипиловский пр-д, дом 37, '
+                'корп.1; ул. Генерала Белова дом 6)\n   -разработчик ВЭБ и мультимедийных приложений (бюджет и платное '
+                'обучение) (адрес обучения: ул. Генерала Белова дом 6)\n   -специалист по информационным системам ('
+                'бюджетное обучение) (адрес обучения: ул. Генерала Белова дом 4)',
         reply_markup=kb.back3)
 
 
@@ -392,3 +390,7 @@ async def more(callback: CallbackQuery):
 async def get_id(msg: Message):
     await msg.answer(str(msg.from_user.id))
 
+
+@user_router.message(Command('role'))
+async def get_role(msg: Message):
+    await msg.answer(str(db.get_role_by_id(msg.from_user.id)))

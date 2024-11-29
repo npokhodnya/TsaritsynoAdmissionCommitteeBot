@@ -26,6 +26,8 @@ async def page2(callback: CallbackQuery):
         await callback.message.edit_text(
             text=f'Пользователей бота, включая вас: {await db.count_of_users()}, из них {await db.count_of_closed_users()} заблокировали бота',
             reply_markup=akb.back)
+        logging.warning(
+            f"USER {callback.from_user.id} WITH ROLE: {await db.get_role_by_id(callback.from_user.id)} CHECK COUNT OF USERS")
     else:
         logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to check count of users")
 
@@ -41,7 +43,7 @@ async def admin_broadcast_handler(call: CallbackQuery, state: FSMContext):
         )
         await state.set_state(Form.start_broadcast)
     else:
-        logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to start broadcast")
+        logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to check count of users")
 
 
 @admin_router.callback_query(F.data == 'admin_sttngs1')

@@ -28,7 +28,7 @@ async def add_admin(message: Message):
                                     f"Новая роль: {new_role}\n"
                                     f"Старая роль: {old_role}\n")
                 logging.critical(
-                    f"USER {message.from_user.id} WITH ROLE: {await db.get_role_by_id(message.from_user.id)} CHANGE ROLE FOR USER {id} FROM {old_role} TO {new_role}")
+                    f"USER {message.from_user.id} WITH ROLE: {await db.get_role_by_id(message.from_user.id)} CHANGED ROLE FOR USER {id} FROM {old_role} TO {new_role}")
             except Exception as e:
                 await message.reply(str(e))
                 logging.warning(
@@ -78,5 +78,5 @@ async def drop_blocked(message: Message):
         logging.critical(
                 f"USER {message.from_user.id} WITH ROLE: {await db.get_role_by_id(message.from_user.id)} DROP ALL INACTIVE USERS!")
     else:
-        logging.critical(
+        logging.warning(
             f"USER {message.from_user.id} WITH ROLE: {await db.get_role_by_id(message.from_user.id)} WANT TO DROP ALL INACTIVE USERS!")
