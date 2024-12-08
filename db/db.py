@@ -71,6 +71,22 @@ async def get_all_sadmins():
         return users
 
 
+async def get_all_sadmins():
+    async with sq.connect("bot_db.db") as db:
+        cursor = await db.execute("SELECT * FROM Users_t1 where role_id > 1")
+        rows = await cursor.fetchall()
+        users = [
+            {
+                "telegram_id": row[0],
+                "username": row[1],
+                "role_id": row[2],
+                "bot_open": bool(row[3])
+            }
+            for row in rows
+        ]
+        return users
+
+
 async def get_role_by_id(tg_id: int) -> str:
     async with sq.connect("bot_db.db") as db:
         cursor = await db.execute("""
