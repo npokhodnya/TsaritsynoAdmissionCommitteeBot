@@ -41,6 +41,14 @@ SpecialtyKeyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(
                                                  [InlineKeyboardButton(text='В главное меню',callback_data='back1')]
                                                  ])
 
+benefits_Keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Лица с ОВЗ', callback_data='ovz')],
+                                                 [InlineKeyboardButton(text='Дети-сироты оставшиеся без попечния родителей', callback_data='orphans')],
+                                                 [InlineKeyboardButton(text='Нуждающиеся в социальной поддержке', callback_data='social_support')],
+                                                 [InlineKeyboardButton(text='В главное меню', callback_data='back1')]
+                                                 ])
+back_to_benefits = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Назад', callback_data='back_to_benefits')]
+                                                 ])
+
 Passing_points_Keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Включить', callback_data='on')],
                                                  [InlineKeyboardButton(text='Выключить', callback_data='off')],
                                                  [InlineKeyboardButton(text='В главное меню', callback_data='back1')]
