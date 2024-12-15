@@ -2,7 +2,7 @@ import logging
 from aiogram.fsm.state import StatesGroup, State
 from aiogram import F, Router
 from aiogram.filters import CommandStart, Command
-from aiogram.types import Message, CallbackQuery, InputMediaDocument, FSInputFile, InputMedia, InputMediaVideo
+from aiogram.types import Message, CallbackQuery, InputMediaDocument
 import db.db as db
 import app.keyboards as kb
 
@@ -24,6 +24,8 @@ start_text = (', здаствуйте. Этот бот поможет вам с 
 text3 = ('Специальности Колледжа "Царицыно"\nКолледж имеет 3 отделения:\n1)Генерала Белова 6 (Отделение управления и '
          'информационных технологий ОУИТ)\n2)Генерала Белова 4 (Политехническое отделение ОП)\n3)Шипиловский проезд '
          '37 (Отделение гостиничного и ресторанного бизнеса ОГРБ)')
+doc_text = "Сейчас идут тех работы, функция недоступна :("
+army_text = "Сейчас идут тех работы, функция недоступна :("
 
 
 @user_router.message(CommandStart())
@@ -95,11 +97,7 @@ async def back_to_specialty(callback: CallbackQuery):
 @user_router.callback_query(F.data == 'doсs')
 async def documents(callback: CallbackQuery):
     await callback.message.edit_text(
-        text='Какие же нужны документы для поступления ? \nВам нужно: \n1)Аттестат (оригинал + копия)\n2)Паспорт + '
-             'копия паспорта. (На одном листе должен быть разворот с фото и разворот с регистрацией)\n3)4 штуки '
-             'цветные фотографии 3х4 (Нужны для студенческого билета и зачетной книжки)\n4)Медицинская справка № '
-             '086-у\n5)Копия страхового медицинского полиса\n6)СНИЛС + копия\n7)Справка об инвалидности (Если '
-             'имеется)\n8)Грамоты за личные достижения в школе (World skills, abilympics и пр.)\n9) Льготы при наличии',
+        text=doc_text,
         reply_markup=kb.back2)
 
 
@@ -316,12 +314,7 @@ async def open_doors_info(callback: CallbackQuery):
 @user_router.callback_query(F.data == 'Seven_nation_army')
 async def army(callback: CallbackQuery):
     await callback.message.edit_text(
-        text='Колледж "Царицыно" предоставляет отсрочку от армии студентам очной формы обучения\n\n'
-             'C 1 января 2017 года вступает в силу Федеральный закон от 14.10.2014 N 302-ФЗ "О внесении изменений в статью 24 Федерального закона'
-             ' "О воинской обязанности и военной службе", согласно которому отсрочка от призыва на военную службу для студентов будет предоставляться независимо'
-             ' от достижения ими определенного возраста при условии, что это первое его образование.\n'
-             'Абитуриентам, поступающим после 11 класса, которые уже воспользовались правом отсрочки от призыва на военную службу учась в школе,'
-             ' при поступлении в колледж повторная отсрочка не предоставляется.',
+        text=army_text,
         reply_markup=kb.back1)
 
 
@@ -382,4 +375,30 @@ async def get_id(msg: Message):
 
 @user_router.message(Command('role'))
 async def get_role(msg: Message):
-    await msg.answer(str(db.get_role_by_id(msg.from_user.id)))
+    if msg.text == '/role':
+        await msg.answer(str(await db.get_role_by_id(msg.from_user.id)))
+    elif len(msg.text.split()) == 2:
+        if await db.is_admin(msg.from_user.id):
+            try:
+                tg_id = int(msg.text.split()[1])
+                role = await db.get_role_by_id(msg.from_user.id)
+                if role is not None:
+                    await msg.answer(str(await db.get_role_by_id(msg.from_user.id)))
+                    logging.info(f"User {msg.from_user.id} with role {await db.get_role_by_id(msg.from_user.id)} check role of user {tg_id}")
+                else:
+                    await msg.answer("There is no user with that id")
+                    logging.info(
+                        f"User {msg.from_user.id} with role {await db.get_role_by_id(msg.from_user.id)} try check role of user {tg_id}, but there is no user with that id in database")
+            except ValueError:
+                await msg.answer("Invalid value for tg_id")
+                logging.info(
+                    f"User {msg.from_user.id} with role {await db.get_role_by_id(msg.from_user.id)} try check role of user, but there is invalid argument id")
+        else:
+            await msg.answer("Invalid usage of /role command")
+            logging.warning(f"User {msg.from_user.id} with role {await db.get_role_by_id(msg.from_user.id)} try check role of another user, whithout admin rights")
+    else:
+        await msg.answer("Invalid usage of /role command")
+
+
+
+

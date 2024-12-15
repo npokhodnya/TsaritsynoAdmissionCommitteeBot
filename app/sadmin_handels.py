@@ -4,7 +4,10 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
+from  run import bot
+
 import db.db as db
+
 
 sadmin_router = Router()
 
@@ -107,16 +110,15 @@ async def drop_blocked(message: Message):
 async def broadcast_sadm_message(message: Message, attention: str, users_data: list):
     global chat_id
     chat_id = message.from_user.id
-    msg = await bot.send_message(text=f'Пользователь {message.from_user.username} использвал функцию: {attention}',
+    await bot.send_message(text=f'Пользователь {message.from_user.username} использвал функцию: {attention}',
                                  chat_id=chat_id)
     for user in users_data:
         try:
             chat_id = user.get('telegram_id')
-
             if chat_id == message.chat.id:
                 await db.change_bot_open_status(chat_id, True)
                 continue
-            msg = await bot.send_message(
+            await bot.send_message(
                 text=f'Пользователь {message.from_user.username} использвал функцию: {attention}',
                 chat_id=chat_id)
             await db.change_bot_open_status(chat_id, True)

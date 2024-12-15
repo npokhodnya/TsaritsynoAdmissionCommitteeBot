@@ -3,10 +3,11 @@ import logging
 from aiogram import Bot, Dispatcher
 import os
 import db.db
+from utils.parser.parser import Parser
 
 bot = Bot(token=os.getenv('BOT_TOKEN'))
 dp = Dispatcher()
-
+parser = Parser()
 
 async def main():
     from app.user_handlers import user_router

@@ -3,6 +3,7 @@ import logging
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram import F, Router
+from aiogram.filters import Command
 from aiogram.enums import ContentType
 from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 
@@ -11,13 +12,16 @@ import db.db as db
 import app.admin_keyboards as akb
 from app.user_handlers import cmd_start
 
-from run import bot
+from run import bot, parser
+
+import app.user_handlers as us_h
 
 admin_router = Router()
 
 
 class Form(StatesGroup):
     start_broadcast = State()
+
 
 @admin_router.callback_query(F.data == 'ucount')
 async def page2(callback: CallbackQuery):
@@ -30,6 +34,32 @@ async def page2(callback: CallbackQuery):
             f"USER {callback.from_user.id} WITH ROLE: {await db.get_role_by_id(callback.from_user.id)} CHECK COUNT OF USERS")
     else:
         logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to check count of users")
+
+
+@admin_router.message(Command("update_docs"))
+async def update_docs(message: Message):
+    user_id = message.from_user.id
+    if await db.is_admin(user_id):
+        msg = await message.answer("Обновление данных о документах...")
+        us_h.doc_text = await parser.get_docs_list()
+        logging.info(f"User {user_id} with role {await db.get_role_by_id(user_id)} update info about docs")
+        await bot.edit_message_text("Данные о документах обновлены!", chat_id=message.chat.id,
+                                    message_id=msg.message_id)
+    else:
+        logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to update info about docs")
+
+
+@admin_router.message(Command("update_army"))
+async def update_army(message: Message):
+    user_id = message.from_user.id
+    if await db.is_admin(user_id):
+        msg = await message.answer("Обновление данных об отсрочке...")
+        us_h.army_text = await parser.get_postpoint_from_army()
+        logging.info(f"User {user_id} with role {await db.get_role_by_id(user_id)} update info about army")
+        await bot.edit_message_text("Данные о документах обновлены!", chat_id=message.chat.id,
+                                    message_id=msg.message_id)
+    else:
+        logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to update info about army")
 
 
 @admin_router.callback_query(F.data == 'mailing')
