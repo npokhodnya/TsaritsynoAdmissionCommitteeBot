@@ -210,4 +210,6 @@ async def universe_broadcast(message: Message, state: FSMContext):
 
 @admin_router.message(Command('update_all'))
 async def update_all_vars(message: Message):
+    msg = await message.answer("Обновление всех данных...")
     await update_all()
+    await msg.edit_text("Все данные обновлены!")
