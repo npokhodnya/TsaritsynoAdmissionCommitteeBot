@@ -14,50 +14,18 @@ class Parser:
     def __init__(self, browser: str = "firefox", hide_browser: bool = True):
         self.browser = browser
         self.hide_browser = hide_browser
-
-    import asyncio
+        self.driver = self.__create_driver()
 
     async def __format_results(self, res: list[Any]) -> str:
-        output = asyncio.Queue()
+        output = list()
+        for i in range(len(res)):
+            res[i] = res[i].text
+        for x in res:
+            if x not in output:
+                output.append(x)
+        return "\n".join(output)
 
-        async def process_item(item):
-            try:
-                item_text = await self.get_text(item)
-            except Exception as e:
-                print(f"Error processing item: {e}")
-                return
-            if item_text is not None:
-                await output.put(item_text)
-
-        tasks = [process_item(item) for item in res]
-
-        await asyncio.gather(*tasks)
-
-        unique_output = []
-        while not output.empty():
-            item = await output.get()
-            if item not in unique_output:
-                unique_output.append(item)
-            output.task_done()
-
-        await output.join()
-
-        return "\n".join(unique_output)
-
-    async def get_text(self, item: Any) -> str | None:
-        await asyncio.sleep(1)
-        if hasattr(item, "text"):
-            return item.text
-        elif isinstance(item, str):
-            return item
-        else:
-            return None
-
-    async def __generate_driver(self):
-        driver = await asyncio.to_thread(self._create_driver)
-        return driver
-
-    def _create_driver(self):
+    def __create_driver(self):
         if self.browser == "firefox":
             if self.hide_browser:
                 firefox_options = FirefoxOptions()
@@ -76,17 +44,16 @@ class Parser:
             raise ValueError("Browser must be either 'firefox' or 'chrome'")
         return driver
 
-    async def __get_data_from_pop_up_buttons(self, id_button: str, wait_time: int = 1) -> list[Any]:
-        driver = await self.__generate_driver()
-        driver.get("https://collegetsaritsyno.mskobr.ru/postuplenie-v-kolledzh/priemnaya-komissiya")
+    async def __get_data_from_pop_up_buttons(self, id_button: str, wait_time: int = 5) -> list[Any]:
+        self.driver.get("https://collegetsaritsyno.mskobr.ru/postuplenie-v-kolledzh/priemnaya-komissiya")
         await asyncio.sleep(wait_time)
-        element = await asyncio.to_thread(driver.find_element, By.ID, id_button)
-        await asyncio.to_thread(driver.execute_script, "arguments[0].scrollIntoView()", element)
-        action = ActionChains(driver)
+        element = self.driver.find_element(By.ID, id_button)
+        self.driver.execute_script("arguments[0].scrollIntoView()", element)
+        action = ActionChains(self.driver)
         await asyncio.sleep(wait_time)
-        await asyncio.to_thread(action.click, on_element=element)
-        await asyncio.to_thread(action.perform)
-        html = await asyncio.to_thread(lambda: driver.page_source)
+        action.click(on_element=element)
+        action.perform()
+        html = self.driver.page_source
         soup = BeautifulSoup(html, "html.parser")
         res = list(soup.find("div", {"id": id_button}).find_all(["span", "a", "p"]))
         return res

@@ -12,7 +12,7 @@ import db.db as db
 import app.admin_keyboards as akb
 from app.user_handlers import cmd_start
 
-from run import bot, parser
+from run import bot, parser, update_all
 
 import app.user_handlers as us_h
 
@@ -58,6 +58,19 @@ async def update_army(message: Message):
         logging.info(f"User {user_id} with role {await db.get_role_by_id(user_id)} update info about army")
         await bot.edit_message_text("Данные о документах обновлены!", chat_id=message.chat.id,
                                     message_id=msg.message_id)
+    else:
+        logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to update info about army")
+
+
+@admin_router.message(Command("update_schedule"))
+async def update_schedule(message: Message):
+    user_id = message.from_user.id
+    if await db.is_admin(user_id):
+        msg = await message.answer("Обновление данных о времени работы приемной комиссии...")
+        us_h.schedule_text = await parser.get_work_schedule()
+        await bot.edit_message_text("Данные о времени работы приемной комиссии обновлены!", chat_id=message.chat.id,
+                                    message_id=msg.message_id)
+        logging.info(f"User {user_id} with role {await db.get_role_by_id(user_id)} update info about work schedule")
     else:
         logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to update info about army")
 
@@ -191,7 +204,10 @@ async def universe_broadcast(message: Message, state: FSMContext):
         caption=message.caption,
         content_type=content_type
     )
-
     await state.clear()
-
     await cmd_start(message)
+
+
+@admin_router.message(Command('update_all'))
+async def update_all_vars(message: Message):
+    await update_all()
