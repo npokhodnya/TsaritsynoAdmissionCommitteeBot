@@ -1,4 +1,4 @@
-import logging
+from run import logger as logging
 from aiogram.fsm.state import StatesGroup, State
 from aiogram import F, Router
 from aiogram.filters import CommandStart, Command
