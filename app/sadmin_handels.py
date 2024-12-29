@@ -1,4 +1,4 @@
-import logging
+from run import logger as logging
 
 from aiogram import Router
 from aiogram.filters import Command
