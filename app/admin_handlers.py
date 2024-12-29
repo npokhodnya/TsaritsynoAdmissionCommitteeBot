@@ -1,4 +1,4 @@
-import logging
+from run import logger as logging
 
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
