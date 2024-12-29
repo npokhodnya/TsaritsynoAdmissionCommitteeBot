@@ -12,15 +12,24 @@ import aioschedule
 bot = Bot(token=os.getenv('BOT_TOKEN'))
 dp = Dispatcher()
 parser = Parser()
-
+logger = logging.getLogger("my_logger")
+logger.setLevel(logging.DEBUG)
+file_handler_info_warning = logging.FileHandler("info_warning.log")
+file_handler_info_warning.setLevel(logging.INFO)
+file_handler_critical = logging.FileHandler("critical.log")
+file_handler_critical.setLevel(logging.CRITICAL)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler_info_warning.setFormatter(formatter)
+file_handler_critical.setFormatter(formatter)
+logger.addHandler(file_handler_info_warning)
+logger.addHandler(file_handler_critical)
 
 async def main():
     from app.user_handlers import user_router
     from app.sadmin_handels import sadmin_router
     from app.admin_handlers import admin_router
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     await update_all()
-    logging.critical("START BOT")
+    logger.critical("START BOT")
     process = Process(target=on_startup)
     process.start()
     dp.include_routers(user_router, sadmin_router, admin_router)
@@ -33,17 +42,17 @@ async def init_all():
 
 
 async def update_all():
-    logging.warning("Starting update all variables with parser...")
-    logging.warning("Starting update docs list...")
+    logger.warning("Starting update all variables with parser...")
+    logger.warning("Starting update docs list...")
     us_h.doc_text = await parser.get_docs_list()
-    logging.warning("Complete updating docs list!")
-    logging.warning("Starting update work schedule...")
+    logger.warning("Complete updating docs list!")
+    logger.warning("Starting update work schedule...")
     us_h.schedule_text = await parser.get_work_schedule()
-    logging.warning("Complete updating work schedule!")
-    logging.warning("Starting update postpoint from army...")
+    logger.warning("Complete updating work schedule!")
+    logger.warning("Starting update postpoint from army...")
     us_h.army_text = await parser.get_postpoint_from_army()
-    logging.warning("Complete updating postpoint from army!")
-    logging.warning("Complete updating all variables with parser!")
+    logger.warning("Complete updating postpoint from army!")
+    logger.warning("Complete updating all variables with parser!")
 
 
 async def scheduler():
@@ -58,6 +67,7 @@ def on_startup():
 
 
 if __name__ == '__main__':
+    
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
