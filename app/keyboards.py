@@ -49,10 +49,6 @@ benefits_Keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(
 back_to_benefits = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Назад', callback_data='back_to_benefits')]
                                                  ])
 
-Passing_points_Keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Включить', callback_data='on')],
-                                                 [InlineKeyboardButton(text='Выключить', callback_data='off')],
-                                                 [InlineKeyboardButton(text='В главное меню', callback_data='back1')]
-                                                 ])
 
 Doors_Keyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Перейти на сайт', url = 'https://collegetsaritsyno.mskobr.ru/postuplenie-v-kolledzh/dni-otkrytyh-dverej')],
                                                  [InlineKeyboardButton(text='В главное меню', callback_data='back1')]
