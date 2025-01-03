@@ -27,6 +27,7 @@ text3 = ('Специальности Колледжа "Царицыно"\nКол
 doc_text = "Сейчас идут тех работы, функция недоступна :("
 army_text = "Сейчас идут тех работы, функция недоступна :("
 schedule_text = "Сейчас идут тех работы, функция недоступна :("
+points_text = 'На данный момент данные о проходных баллах не доступны. Информация о проходных баллах будет обновляться.'
 
 
 @user_router.message(CommandStart())
@@ -275,21 +276,9 @@ async def invalids(callback: CallbackQuery):
 @user_router.callback_query(F.data == 'Passing_points')
 async def passing_points(callback: CallbackQuery):
     await callback.message.edit_text(
-        text='На данный момент данные о проходных баллах не доступны. Информация о проходных '
-             'баллах будет обновляться.\nВключить отслеживание проходого балла?',
-        reply_markup=kb.Passing_points_Keyboard)
+        text=points_text,
+        reply_markup=kb.back1)
 
-
-@user_router.callback_query(F.data == 'on')
-async def tracking_on(callback: CallbackQuery):
-    await callback.message.edit_text(text=start_text2,
-                                     reply_markup=kb.back1)
-
-
-@user_router.callback_query(F.data == 'off')
-async def tracking_off(callback: CallbackQuery):
-    await callback.message.edit_text(text=start_text2,
-                                     reply_markup=kb.back1)
 
 
 @user_router.callback_query(F.data == 'Opening_hours')
