@@ -8,15 +8,16 @@ import db.db
 from utils.parser.parser import Parser
 import app.user_handlers as us_h
 import aioschedule
+from logging.handlers import RotatingFileHandler
 
 bot = Bot(token=os.getenv('BOT_TOKEN'))
 dp = Dispatcher()
 parser = Parser()
 logger = logging.getLogger("my_logger")
 logger.setLevel(logging.DEBUG)
-file_handler_info_warning = logging.FileHandler("info_warning.log")
+file_handler_info_warning = logging.handlers.RotatingFileHandler("info_warning.log", maxBytes=1073741824, backupCount=1)
 file_handler_info_warning.setLevel(logging.INFO)
-file_handler_critical = logging.FileHandler("critical.log")
+file_handler_critical = logging.handlers.RotatingFileHandler("critical.log", maxBytes=1073741824, backupCount=1)
 file_handler_critical.setLevel(logging.CRITICAL)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 file_handler_info_warning.setFormatter(formatter)
