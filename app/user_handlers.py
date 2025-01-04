@@ -10,8 +10,8 @@ import app.admin_keyboards as akb
 
 user_router = Router()
 
-VERSION = '0.1.3'
-DEVELOPERS = ['dev1', 'dev2']
+VERSION = '1.0.0'
+DEVELOPERS = ['@npokhodnya', '@@Volosatiyyy']
 
 
 class Form(StatesGroup):
