@@ -41,10 +41,15 @@ async def update_docs(message: Message):
     user_id = message.from_user.id
     if await db.is_admin(user_id):
         msg = await message.answer("Обновление данных о документах...")
-        us_h.doc_text = await parser.get_docs_list()
-        logging.info(f"User {user_id} with role {await db.get_role_by_id(user_id)} update info about docs")
-        await bot.edit_message_text("Данные о документах обновлены!", chat_id=message.chat.id,
-                                    message_id=msg.message_id)
+        try:
+            us_h.doc_text = await parser.get_docs_list()
+            logging.info(f"User {user_id} with role {await db.get_role_by_id(user_id)} update info about docs")
+            await bot.edit_message_text("Данные о документах обновлены!", chat_id=message.chat.id,
+                                        message_id=msg.message_id)
+        except Exception as e:
+            await bot.edit_message_text(f"Данные о документах не были обновлены!\nОшибка: {e}", chat_id=message.chat.id,
+                                        message_id=msg.message_id)
+            logging.error(f"User {user_id} with role {await db.get_role_by_id(user_id)} try update info about army, but error {e}")
     else:
         logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to update info about docs")
 
@@ -54,10 +59,16 @@ async def update_army(message: Message):
     user_id = message.from_user.id
     if await db.is_admin(user_id):
         msg = await message.answer("Обновление данных об отсрочке...")
-        us_h.army_text = await parser.get_postpoint_from_army()
-        logging.info(f"User {user_id} with role {await db.get_role_by_id(user_id)} update info about army")
-        await bot.edit_message_text("Данные о документах обновлены!", chat_id=message.chat.id,
-                                    message_id=msg.message_id)
+        try:
+            us_h.army_text = await parser.get_postpoint_from_army()
+            logging.info(f"User {user_id} with role {await db.get_role_by_id(user_id)} update info about army")
+            await bot.edit_message_text("Данные о документах обновлены!", chat_id=message.chat.id,
+                                        message_id=msg.message_id)
+        except Exception as e:
+            await bot.edit_message_text(f"Данные о документах не были обновлены!\nОшибка: {e}", chat_id=message.chat.id,
+                                        message_id=msg.message_id)
+            logging.error(
+                f"User {user_id} with role {await db.get_role_by_id(user_id)} try update info about army, but error {e}")
     else:
         logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to update info about army")
 
@@ -67,10 +78,17 @@ async def update_schedule(message: Message):
     user_id = message.from_user.id
     if await db.is_admin(user_id):
         msg = await message.answer("Обновление данных о времени работы приемной комиссии...")
-        us_h.schedule_text = await parser.get_work_schedule()
-        await bot.edit_message_text("Данные о времени работы приемной комиссии обновлены!", chat_id=message.chat.id,
-                                    message_id=msg.message_id)
-        logging.info(f"User {user_id} with role {await db.get_role_by_id(user_id)} update info about work schedule")
+        try:
+            us_h.schedule_text = await parser.get_work_schedule()
+            await bot.edit_message_text("Данные о времени работы приемной комиссии обновлены!", chat_id=message.chat.id,
+                                        message_id=msg.message_id)
+            logging.info(f"User {user_id} with role {await db.get_role_by_id(user_id)} update info about work schedule")
+
+        except Exception as e:
+            await bot.edit_message_text(f"Данные о документах не были обновлены!\nОшибка: {e}", chat_id=message.chat.id,
+                                        message_id=msg.message_id)
+            logging.error(
+                f"User {user_id} with role {await db.get_role_by_id(user_id)} try update info about army, but error {e}")
     else:
         logging.warning(f"User {user_id} with role {await db.get_role_by_id(user_id)} try to update info about army")
 

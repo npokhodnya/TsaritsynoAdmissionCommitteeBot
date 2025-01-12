@@ -25,6 +25,7 @@ file_handler_critical.setFormatter(formatter)
 logger.addHandler(file_handler_info_warning)
 logger.addHandler(file_handler_critical)
 
+
 async def main():
     from app.user_handlers import user_router
     from app.sadmin_handels import sadmin_router
@@ -68,7 +69,6 @@ def on_startup():
 
 
 if __name__ == '__main__':
-    
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
