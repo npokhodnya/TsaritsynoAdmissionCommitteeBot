@@ -101,7 +101,7 @@ async def get_user_by_id(telegram_id: int) -> None | dict:
 
 async def drop_all_closed():
     async with sq.connect("bot_db.db") as db:
-        await db.execute("delete * FROM Users_t1 WHERE bot_open == 0")
+        await db.execute("delete FROM Users_t1 WHERE bot_open == 0")
 
 
 async def count_of_users():
