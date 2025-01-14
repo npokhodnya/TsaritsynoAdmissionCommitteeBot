@@ -33,7 +33,7 @@ async def add_user(telegram_id: int, username: str):
     async with sq.connect("bot_db.db") as db:
         await db.execute("""
             INSERT INTO Users_t1 (telegram_id, username, role_id)
-            VALUES (?, ?, 1)
+            VALUES (?, ?, 0)
             ON CONFLICT(telegram_id) DO NOTHING
         """, (telegram_id, username))
         await db.commit()
