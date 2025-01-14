@@ -6,9 +6,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
 
 from bs4 import BeautifulSoup
 
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 
 class Parser:
     def __init__(self, browser: str = "firefox", hide_browser: bool = True):
@@ -30,14 +34,14 @@ class Parser:
             if self.hide_browser:
                 firefox_options = FirefoxOptions()
                 firefox_options.add_argument("--headless")
-                driver = webdriver.Firefox(options=firefox_options)
+                driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=firefox_options)
             else:
                 driver = webdriver.Firefox()
         elif self.browser == "chrome":
             if self.hide_browser:
                 chrome_options = ChromeOptions()
                 chrome_options.add_argument("--headless")
-                driver = webdriver.Chrome(options=chrome_options)
+                driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
             else:
                 driver = webdriver.Chrome()
         else:
