@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from multiprocessing import Process
-
+from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 import os
 import db.db
@@ -10,6 +10,7 @@ import app.user_handlers as us_h
 import aioschedule
 from logging.handlers import RotatingFileHandler
 
+load_dotenv("config.env")
 bot = Bot(token=os.getenv('BOT_TOKEN'))
 dp = Dispatcher()
 parser = Parser()
