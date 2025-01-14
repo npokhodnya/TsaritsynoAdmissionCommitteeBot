@@ -36,6 +36,8 @@ class Parser:
                 firefox_options = FirefoxOptions()
                 firefox_options.add_argument("--headless")
                 firefox_options.add_argument("--allow-hosts localhost")
+                firefox_options.add_argument('--no-sandbox')
+                firefox_options.add_argument('--disable-dev-shm-usage')
                 driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()),
                                            options=firefox_options)
             else:
@@ -45,6 +47,8 @@ class Parser:
                 chrome_options = ChromeOptions()
                 chrome_options.add_argument("--headless")
                 chrome_options.add_argument("--allow-hosts localhost")
+                chrome_options.add_argument('--no-sandbox')
+                chrome_options.add_argument('--disable-dev-shm-usage')
                 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),
                                           options=chrome_options)
             else:
