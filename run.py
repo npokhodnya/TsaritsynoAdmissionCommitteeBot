@@ -13,7 +13,7 @@ from logging.handlers import RotatingFileHandler
 load_dotenv("config.env")
 bot = Bot(token=os.getenv('BOT_TOKEN'))
 dp = Dispatcher()
-parser = Parser()
+parser = Parser(browser="chrome")
 logger = logging.getLogger("my_logger")
 logger.setLevel(logging.DEBUG)
 file_handler_info_warning = logging.handlers.RotatingFileHandler("info_warning.log", maxBytes=1073741824, backupCount=1)
