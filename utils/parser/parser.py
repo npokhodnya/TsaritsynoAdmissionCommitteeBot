@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
+
 class Parser:
     def __init__(self, browser: str = "firefox", hide_browser: bool = True):
         self.browser = browser
@@ -34,14 +35,18 @@ class Parser:
             if self.hide_browser:
                 firefox_options = FirefoxOptions()
                 firefox_options.add_argument("--headless")
-                driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=firefox_options)
+                firefox_options.add_argument("--allow-hosts localhost")
+                driver = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()),
+                                           options=firefox_options)
             else:
                 driver = webdriver.Firefox()
         elif self.browser == "chrome":
             if self.hide_browser:
                 chrome_options = ChromeOptions()
                 chrome_options.add_argument("--headless")
-                driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
+                chrome_options.add_argument("--allow-hosts localhost")
+                driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),
+                                          options=chrome_options)
             else:
                 driver = webdriver.Chrome()
         else:
