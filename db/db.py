@@ -6,7 +6,7 @@ async def initialize_database():
         await db.execute("""
             CREATE TABLE IF NOT EXISTS Users_t1  (
                 telegram_id  INTEGER PRIMARY KEY,
-                username TEXT NOT NULL,
+                username TEXT,
                 role_id INTEGER NOT NULL,
                 bot_open BOOLEAN DEFAULT FALSE
             );
