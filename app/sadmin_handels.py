@@ -1,14 +1,12 @@
 from datetime import datetime
 
-from run import logger as logging
+from run import logger as logging, database as db
 
 from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery, InputFile, InputMediaPhoto, InputMediaDocument, FSInputFile
 
-from  run import bot
-
-import db.db as db
+from run import bot
 
 import app.keyboards as kb
 import app.sadmin_keyboards as sakb

@@ -4,16 +4,19 @@ from multiprocessing import Process
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 import os
-import db.db
+from db.db import Database
 from utils.parser.parser import Parser
 import app.user_handlers as us_h
 import aioschedule
 from logging.handlers import RotatingFileHandler
 
 load_dotenv("config.env")
+
 bot = Bot(token=os.getenv('BOT_TOKEN'))
 dp = Dispatcher()
-parser = Parser(browser="chrome")
+parser = Parser(browser="firefox")
+database = Database("bot_db.db")
+
 logger = logging.getLogger("my_logger")
 logger.setLevel(logging.DEBUG)
 file_handler_info_warning = logging.handlers.RotatingFileHandler("info_warning.log", maxBytes=1073741824, backupCount=1)
@@ -41,7 +44,7 @@ async def main():
 
 
 async def init_all():
-    await db.db.initialize_database()
+    await database.initialize_database()
 
 
 async def update_all():

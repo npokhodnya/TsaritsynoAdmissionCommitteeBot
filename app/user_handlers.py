@@ -1,12 +1,11 @@
 from run import logger as logging
 from run import bot
+from run import database as db
 
 from aiogram.fsm.state import StatesGroup, State
 from aiogram import F, Router
 from aiogram.filters import CommandStart, Command
-from aiogram.types import Message, CallbackQuery, InputMediaDocument
-
-import db.db as db
+from aiogram.types import Message, CallbackQuery, InputMediaDocument, FSInputFile
 
 import app.keyboards as kb
 
@@ -107,14 +106,15 @@ async def back_to_specialty(callback: CallbackQuery):
 
 @user_router.callback_query(F.data == 'back_del')
 async def back_to_page1(callback: CallbackQuery):
+    us_id = callback.from_user.id
     if await db.is_super_admin(us_id):
         sent_message = await callback.message.answer(f'{callback.from_user.first_name}{start_text}',
                              reply_markup=sakb.sadmin_keyboard1)
-    elif await db.is_admin(message.from_user.id):
-        sent_message = await message.answer(f'{callback.from_user.first_name}{start_text}',
+    elif await db.is_admin(us_id):
+        sent_message = await callback.answer(f'{callback.from_user.first_name}{start_text}',
                              reply_markup=akb.admin_keyboard1)
     else:
-        sent_message = await message.answer(f'{callback.from_user.first_name}{start_text}',
+        sent_message = await callback.answer(f'{callback.from_user.first_name}{start_text}',
                              reply_markup=kb.keyboard_page1)
     await bot.delete_message(chat_id=callback.message.chat.id, message_id=str(sent_message.message_id - 1))
 
@@ -349,7 +349,7 @@ async def get_id(msg: Message):
 
 @user_router.message(Command('role'))
 async def get_role(msg: Message):
-    if msg.text == '/role':
+    if msg.text.strip() == '/role':
         await msg.answer(str(await db.get_role_by_id(msg.from_user.id)))
     elif len(msg.text.split()) == 2:
         if await db.is_admin(msg.from_user.id):
