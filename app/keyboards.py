@@ -35,8 +35,6 @@ SpecialtyKeyboard = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(
                                                  [InlineKeyboardButton(text='Туризм и гостеприимство', callback_data='tourism')],
                                                  [InlineKeyboardButton(text='Сервис на транспорте',callback_data='transport')],
                                                  [InlineKeyboardButton(text='Информационные системы и программирование', callback_data='inf')],
-                                                 [InlineKeyboardButton(text='Инфокоммуникационные сети', callback_data='information_and_communication')],
-                                                 [InlineKeyboardButton(text='Сетевое администрирование', callback_data='sysadm')],
                                                  [InlineKeyboardButton(text='Компьютерные системы и комплексы', callback_data='comp_comp')],
                                                  [InlineKeyboardButton(text='В главное меню',callback_data='back1')]
                                                  ])
