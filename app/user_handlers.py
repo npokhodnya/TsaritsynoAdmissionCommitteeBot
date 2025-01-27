@@ -149,27 +149,6 @@ async def inf_info(callback: CallbackQuery):
         reply_markup=kb.back3)
 
 
-@user_router.callback_query(F.data == 'information_and_communication')
-async def information_and_communication_info(callback: CallbackQuery):
-    await callback.message.edit_media(
-        media=InputMediaDocument(
-            media='https://collegetsaritsyno.mskobr.ru/attach_files/13-infokommunikatsionnyie-seti-i-sistemyi-svyazi.pdf'),
-        reply_markup=kb.back3)
-    await callback.message.edit_caption(
-        caption='Данные о направлении "Инфокоммуникационные сети"',
-        reply_markup=kb.back3)
-
-
-@user_router.callback_query(F.data == 'sysadm')
-async def sysadm_info(callback: CallbackQuery):
-    await callback.message.edit_media(
-        media=InputMediaDocument(
-            media='https://collegetsaritsyno.mskobr.ru/attach_files/i-sistemnoe-administrirovanie.pdf'),
-        reply_markup=kb.back3)
-    await callback.message.edit_caption(
-        caption='Данные о направлении "Сетевое администрирование"',
-        reply_markup=kb.back3)
-
 
 @user_router.callback_query(F.data == 'comp_comp')
 async def sysadm_info(callback: CallbackQuery):
