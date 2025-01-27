@@ -1,3 +1,5 @@
+import asyncio
+
 from run import logger as logging
 
 from aiogram.fsm.context import FSMContext
@@ -134,6 +136,7 @@ async def broadcast_message(message: Message, users_data: list, text: str = None
                                  chat_id=message.chat.id)
 
     for user in users_data:
+        await asyncio.sleep(0.5)
         try:
             chat_id = user.get('telegram_id')
 

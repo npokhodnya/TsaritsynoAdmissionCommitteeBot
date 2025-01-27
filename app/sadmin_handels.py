@@ -1,12 +1,17 @@
+from datetime import datetime
+
 from run import logger as logging
 
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.filters import Command
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery, InputFile, InputMediaPhoto, InputMediaDocument, FSInputFile
 
 from  run import bot
 
 import db.db as db
+
+import app.keyboards as kb
+import app.sadmin_keyboards as sakb
 
 
 sadmin_router = Router()
@@ -107,19 +112,21 @@ async def drop_blocked(message: Message):
             f"USER {message.from_user.id} WITH ROLE: {await db.get_role_by_id(message.from_user.id)} WANT TO DROP ALL INACTIVE USERS!")
 
 
-async def broadcast_sadm_message(message: Message, attention: str, users_data: list):
-    global chat_id
-    chat_id = message.from_user.id
+async def broadcast_sadm_message(message: Message | CallbackQuery, attention: str, users_data: list):
+    if type(message) == Message:
+        chat_id = message.chat.id
+    else:
+        chat_id = message.message.chat.id
     await bot.send_message(text=f'Пользователь {message.from_user.username} использвал функцию: {attention}',
                                  chat_id=chat_id)
     for user in users_data:
         try:
             chat_id = user.get('telegram_id')
-            if chat_id == message.chat.id:
+            if chat_id == message.from_user.id:
                 await db.change_bot_open_status(chat_id, True)
                 continue
             await bot.send_message(
-                text=f'Пользователь {message.from_user.username} использвал функцию: {attention}',
+                text=f'USER {message.from_user.username} USED FUNCTION: {attention}',
                 chat_id=chat_id)
             await db.change_bot_open_status(chat_id, True)
 
@@ -131,3 +138,31 @@ async def broadcast_sadm_message(message: Message, attention: str, users_data: l
 
             if user.get('bot_open'):
                 await db.change_bot_open_status(chat_id, False)
+
+
+@sadmin_router.callback_query(F.data == "send_logs")
+async def send_logs(callback: CallbackQuery):
+    us_id = callback.from_user.id
+    if await db.is_super_admin(us_id):
+        users_data = await db.get_all_sadmins()
+        await broadcast_sadm_message(message=callback, attention='send_logs', users_data=users_data)
+        if await db.is_super_admin(callback.from_user.id):
+            now = datetime.now()
+            await callback.message.reply_document(FSInputFile("info_warning.log", "logs.log"), caption=f"Логи на {now.date()} - {now.time()}")
+            logging.critical(
+                    f"USER {callback.from_user.id} WITH ROLE: {await db.get_role_by_id(callback.from_user.id)} GETS LOGS!")
+    else:
+        logging.critical(
+            f"USER {callback.from_user.id} WITH ROLE: {await db.get_role_by_id(callback.from_user.id)} WANT TO GET LOGS!")
+
+
+@sadmin_router.callback_query(F.data == "sadmin_sttngs1")
+async def send_logs(callback: CallbackQuery):
+    await callback.message.edit_text(text=f'{callback.from_user.first_name}{", добро пожаловать"}',
+                                     reply_markup=sakb.sadmin_keyboard2)
+
+
+@sadmin_router.callback_query(F.data == 'sadmin_sttngs2')
+async def sadmin_page1(callback: CallbackQuery):
+    await callback.message.edit_text(text=f'{callback.from_user.first_name}{", добро пожаловать"}',
+                                     reply_markup=sakb.sadmin_keyboard1)

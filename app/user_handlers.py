@@ -1,16 +1,22 @@
 from run import logger as logging
+from run import bot
+
 from aiogram.fsm.state import StatesGroup, State
 from aiogram import F, Router
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery, InputMediaDocument
+
 import db.db as db
+
 import app.keyboards as kb
 
 import app.admin_keyboards as akb
 
+import app.sadmin_keyboards as sakb
+
 user_router = Router()
 
-VERSION = '1.0.0'
+VERSION = '0.1.0-beta'
 DEVELOPERS = ['@npokhodnya', '@@Volosatiyyy']
 
 
@@ -32,8 +38,12 @@ points_text = 'На данный момент данные о проходных
 
 @user_router.message(CommandStart())
 async def cmd_start(message: Message):
-    await db.add_user(message.from_user.id, message.from_user.username)
-    if await db.is_admin(message.from_user.id):
+    us_id = message.from_user.id
+    await db.add_user(us_id, message.from_user.username)
+    if await db.is_super_admin(us_id):
+        await message.answer(f'{message.from_user.first_name}{start_text}',
+                             reply_markup=sakb.sadmin_keyboard1)
+    elif await db.is_admin(message.from_user.id):
         await message.answer(f'{message.from_user.first_name}{start_text}',
                              reply_markup=akb.admin_keyboard1)
     else:
@@ -92,7 +102,6 @@ async def how_to_enroll(callback: CallbackQuery):
 async def back_to_specialty(callback: CallbackQuery):
     sent_message = await callback.message.answer(text=f'{text3}',
                                                  reply_markup=kb.SpecialtyKeyboard)
-    from run import bot
     await bot.delete_message(chat_id=callback.message.chat.id, message_id=str(sent_message.message_id - 1))
 
 
