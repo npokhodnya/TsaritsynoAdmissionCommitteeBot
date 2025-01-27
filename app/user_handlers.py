@@ -17,7 +17,7 @@ import app.sadmin_keyboards as sakb
 user_router = Router()
 
 VERSION = '0.1.0-beta'
-DEVELOPERS = ['@npokhodnya', '@@Volosatiyyy']
+DEVELOPERS = ['@npokhodnya', '@Volosatiyyy']
 
 
 class Form(StatesGroup):
@@ -102,6 +102,20 @@ async def how_to_enroll(callback: CallbackQuery):
 async def back_to_specialty(callback: CallbackQuery):
     sent_message = await callback.message.answer(text=f'{text3}',
                                                  reply_markup=kb.SpecialtyKeyboard)
+    await bot.delete_message(chat_id=callback.message.chat.id, message_id=str(sent_message.message_id - 1))
+
+
+@user_router.callback_query(F.data == 'back_del')
+async def back_to_page1(callback: CallbackQuery):
+    if await db.is_super_admin(us_id):
+        sent_message = await callback.message.answer(f'{callback.from_user.first_name}{start_text}',
+                             reply_markup=sakb.sadmin_keyboard1)
+    elif await db.is_admin(message.from_user.id):
+        sent_message = await message.answer(f'{callback.from_user.first_name}{start_text}',
+                             reply_markup=akb.admin_keyboard1)
+    else:
+        sent_message = await message.answer(f'{callback.from_user.first_name}{start_text}',
+                             reply_markup=kb.keyboard_page1)
     await bot.delete_message(chat_id=callback.message.chat.id, message_id=str(sent_message.message_id - 1))
 
 
@@ -320,8 +334,10 @@ async def get_help(message: Message):
 
 @user_router.callback_query(F.data == 'more')
 async def more(callback: CallbackQuery):
-    await callback.message.edit_text(text=f'{start_text2}',
-                                     reply_markup=kb.back1)
+    await callback.message.edit_media(
+        media=InputMediaDocument(media=FSInputFile("Files_for_amigo/KCP.docx", "Цифры приема по специальностям.docx"),
+                                 reply_markup=kb.keyboard_page1))
+    await callback.message.edit_caption(caption=f"Цифры приема по специальностям", reply_markup=kb.back_del)
 
 
 @user_router.callback_query(F.data == 'back1')
