@@ -335,7 +335,7 @@ async def get_help(message: Message):
 @user_router.callback_query(F.data == 'more')
 async def more(callback: CallbackQuery):
     await callback.message.edit_media(
-        media=InputMediaDocument(media=FSInputFile("Files_for_amigo/KCP.docx", "Цифры приема по специальностям.docx"),
+        media=InputMediaDocument(media=FSInputFile("Files_for_amigo/KCP.pdf", "Цифры приема по специальностям.pdf"),
                                  reply_markup=kb.keyboard_page1))
     await callback.message.edit_caption(caption=f"Цифры приема по специальностям", reply_markup=kb.back_del)
 
