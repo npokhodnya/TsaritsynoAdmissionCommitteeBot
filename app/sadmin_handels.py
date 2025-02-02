@@ -156,6 +156,55 @@ async def send_logs(callback: CallbackQuery):
             f"USER {callback.from_user.id} WITH ROLE: {await db.get_role_by_id(callback.from_user.id)} WANT TO GET LOGS!")
 
 
+@sadmin_router.callback_query(F.data == 'mode_xls')
+async def drop_blocked(callback: CallbackQuery):
+    users_data = await db.get_all_sadmins()
+    await broadcast_sadm_message(message=callback, attention='send_db', users_data=users_data)
+    if await db.is_super_admin(callback.from_user.id):
+        await db.get_csv()
+        await db.get_xlsx()
+        await callback.message.reply_document(document=FSInputFile("db_xlsx.xlsx", "База данных.xlsx"))
+        critical_txt = f"USER {callback.from_user.id} WITH ROLE: {await db.get_role_by_id(callback.from_user.id)} GET EXEL DB!"
+        logging.critical(critical_txt)
+    else:
+        critical_txt = f"USER {callback.from_user.id} WITH ROLE: {await db.get_role_by_id(callback.from_user.id)} WANT TO GET EXEL DB!"
+        logging.critical(critical_txt)
+
+
+@sadmin_router.callback_query(F.data == 'mode_csv')
+async def drop_blocked(callback: CallbackQuery):
+    users_data = await db.get_all_sadmins()
+    await broadcast_sadm_message(message=callback, attention='send_db', users_data=users_data)
+    if await db.is_super_admin(callback.from_user.id):
+        await db.get_csv()
+        await callback.message.reply_document(document=FSInputFile("db_csv.csv", "База данных.csv"))
+        critical_txt = f"USER {callback.from_user.id} WITH ROLE: {await db.get_role_by_id(callback.from_user.id)} GET CSV DB!"
+        logging.critical(critical_txt)
+    else:
+        critical_txt = f"USER {callback.from_user.id} WITH ROLE: {await db.get_role_by_id(callback.from_user.id)} WANT TO GET CSV DB!"
+        logging.critical(critical_txt)
+
+
+@sadmin_router.callback_query(F.data == 'mode_db')
+async def drop_blocked(callback: CallbackQuery):
+    users_data = await db.get_all_sadmins()
+    await broadcast_sadm_message(message=callback, attention='send_db', users_data=users_data)
+    if await db.is_super_admin(callback.from_user.id):
+        await callback.message.reply_document(document=FSInputFile("bot_db.db", "База данных.db"))
+        critical_txt = f"USER {callback.from_user.id} WITH ROLE: {await db.get_role_by_id(callback.from_user.id)} GET DB!"
+        logging.critical(critical_txt)
+    else:
+        critical_txt = f"USER {callback.from_user.id} WITH ROLE: {await db.get_role_by_id(callback.from_user.id)} WANT TO GET DB!"
+        logging.critical(critical_txt)
+
+
+@sadmin_router.message(F.data == 'send_db')
+async def drop_blocked(callback: CallbackQuery):
+    if await db.is_super_admin(callback.from_user.id):
+        await callback.message.edit_text(text=f'Выберите формат файла базы данных',
+                                         reply_markup=sakb.sadmin_keyboard3)
+
+
 @sadmin_router.callback_query(F.data == "sadmin_sttngs1")
 async def send_logs(callback: CallbackQuery):
     await callback.message.edit_text(text=f'{callback.from_user.first_name}{", добро пожаловать"}',
