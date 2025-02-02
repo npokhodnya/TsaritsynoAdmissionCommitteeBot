@@ -8,7 +8,8 @@ sadmin_keyboard1 = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(t
 
 sadmin_keyboard3 = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='EXCEL таблица', callback_data='mode_xls'),
                                                           InlineKeyboardButton(text='DB файл', callback_data='mode_db')],
-                                                         [InlineKeyboardButton(text='CSV таблица', callback_data='mode_csv')]])
+                                                         [InlineKeyboardButton(text='CSV таблица', callback_data='mode_csv')],
+                                                         [InlineKeyboardButton(text='Назад', callback_data='back1')]])
 
 
 sadmin_keyboard2 = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text='Как поступить в колледж?', callback_data='How')],
