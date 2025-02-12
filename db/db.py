@@ -39,6 +39,27 @@ async def add_user(telegram_id: int, username: str):
         await db.commit()
 
 
+async def get_csv():
+    async with sq.connect("bot_db.db") as db:
+        cursor = await db.execute("""
+        SELECT telegram_id, username, bot_open, role
+        FROM Users_t1
+        JOIN Users_t2 on Users_t1.role_id = Users_t2.role_id
+        """)
+        data = await cursor.fetchall()
+        with open('db_csv.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([i[0] for i in cursor.description])  # Write header
+            writer.writerows(data)
+            cursor.close()
+
+
+async def get_xlsx():
+    async with sq.connect("bot_db.db") as db:
+        df = pd.read_csv("db_csv.csv")
+        df.to_excel('db_xlsx.xlsx', index=False)
+
+
 async def get_all_users():
     async with sq.connect("bot_db.db") as db:
         cursor = await db.execute("SELECT * FROM Users_t1")
