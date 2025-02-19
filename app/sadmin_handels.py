@@ -1,14 +1,12 @@
 from datetime import datetime
 
-from run import logger as logging
+from run import logger as logging, database as db
 
 from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery, InputFile, InputMediaPhoto, InputMediaDocument, FSInputFile
 
-from  run import bot
-
-import db.db as db
+from run import bot
 
 import app.keyboards as kb
 import app.sadmin_keyboards as sakb
@@ -198,8 +196,8 @@ async def drop_blocked(callback: CallbackQuery):
         logging.critical(critical_txt)
 
 
-@sadmin_router.message(F.data == 'send_db')
-async def drop_blocked(callback: CallbackQuery):
+@sadmin_router.callback_query(F.data == 'send_db')
+async def send_db(callback: CallbackQuery):
     if await db.is_super_admin(callback.from_user.id):
         await callback.message.edit_text(text=f'Выберите формат файла базы данных',
                                          reply_markup=sakb.sadmin_keyboard3)

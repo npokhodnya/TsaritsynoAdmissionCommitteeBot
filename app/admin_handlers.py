@@ -9,12 +9,11 @@ from aiogram.filters import Command
 from aiogram.enums import ContentType
 from aiogram.types import Message, CallbackQuery, ReplyKeyboardRemove
 
-import db.db as db
 
 import app.admin_keyboards as akb
 from app.user_handlers import cmd_start
 
-from run import bot, parser, update_all
+from run import bot, parser, update_all, database as db
 
 import app.user_handlers as us_h
 
