@@ -321,16 +321,22 @@ async def get_help(message: Message):
 @user_router.callback_query(F.data == 'more')
 async def more(callback: CallbackQuery):
     await callback.message.edit_media(
-        media=InputMediaDocument(media=FSInputFile("files_for_amigo/KCP.pdf", "Цифры приема по специальностям.pdf"),
+        media=InputMediaDocument(media=FSInputFile("files_for_amigo/KCP.pdf",
+                                                   "Цифры приема по специальностям.pdf"),
                                  reply_markup=kb.keyboard_page1))
     await callback.message.edit_caption(caption=f"Цифры приема по специальностям", reply_markup=kb.back_del)
 
 
 @user_router.callback_query(F.data == 'back1')
 async def back_to_page1(callback: CallbackQuery):
-    if await db.get_role_by_id(callback.from_user.id) == 'admin':
+    if await db.is_super_admin(callback.from_user.id):
+        await callback.message.edit_text(f'{callback.from_user.first_name}{start_text}',
+                                         reply_markup=sakb.sadmin_keyboard1)
+
+    elif await db.is_admin(callback.from_user.id):
         await callback.message.edit_text(f'{callback.from_user.first_name}{start_text}',
                                          reply_markup=akb.admin_keyboard1)
+
     else:
         await callback.message.edit_text(f'{callback.from_user.first_name}{start_text}',
                                          reply_markup=kb.keyboard_page1)

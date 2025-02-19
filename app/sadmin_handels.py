@@ -196,8 +196,8 @@ async def drop_blocked(callback: CallbackQuery):
         logging.critical(critical_txt)
 
 
-@sadmin_router.message(F.data == 'send_db')
-async def drop_blocked(callback: CallbackQuery):
+@sadmin_router.callback_query(F.data == 'send_db')
+async def send_db(callback: CallbackQuery):
     if await db.is_super_admin(callback.from_user.id):
         await callback.message.edit_text(text=f'Выберите формат файла базы данных',
                                          reply_markup=sakb.sadmin_keyboard3)
