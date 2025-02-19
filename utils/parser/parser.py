@@ -72,7 +72,7 @@ class Parser:
         return res
 
     async def get_docs_list(self):
-        result = await self.__get_data_from_pop_up_buttons("lrjg173cfr")
+        result = await self.__get_data_from_pop_up_buttons("oz7400w7jy")
         return await self.__format_results(result)
 
     async def get_work_schedule(self):
