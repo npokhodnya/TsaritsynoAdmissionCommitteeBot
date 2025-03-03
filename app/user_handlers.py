@@ -57,7 +57,11 @@ async def cmd_about(message: Message):
 
 @user_router.callback_query(F.data == 'sttngs1')
 async def page2(callback: CallbackQuery):
-    if await db.is_admin(callback.from_user.id):
+    if await db.is_super_admin(callback.from_user.id):
+        await callback.message.edit_text(f'{callback.from_user.first_name}{start_text}',
+                                         reply_markup=sakb.sadmin_keyboard2)
+
+    elif await db.is_admin(callback.from_user.id):
         await callback.message.edit_text(text=f'{callback.from_user.first_name}{start_text}',
                                          reply_markup=akb.admin_keyboard2)
     else:
@@ -321,8 +325,7 @@ async def get_help(message: Message):
 @user_router.callback_query(F.data == 'more')
 async def more(callback: CallbackQuery):
     await callback.message.edit_media(
-        media=InputMediaDocument(media=FSInputFile("files_for_amigo/KCP.pdf",
-                                                   "Цифры приема по специальностям.pdf"),
+        media=InputMediaDocument(media="https://collegetsaritsyno.mskobr.ru/files/2023/испр.4.5.6.Специальности.pdf",
                                  reply_markup=kb.keyboard_page1))
     await callback.message.edit_caption(caption=f"Цифры приема по специальностям", reply_markup=kb.back_del)
 
