@@ -15,7 +15,7 @@ import app.sadmin_keyboards as sakb
 
 user_router = Router()
 
-VERSION = '0.1.0-beta'
+VERSION = '0.1.2b'
 DEVELOPERS = ['@npokhodnya', '@Volosatiyyy']
 
 
